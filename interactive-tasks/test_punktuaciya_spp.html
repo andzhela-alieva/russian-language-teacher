@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Запятые в сложноподчинённых предложениях</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #f3f1e8;
+    --rule: #c9d6e3;
+    --margin: #e2a3a0;
+    --ink: #233047;
+    --ink-soft: #4b5a73;
+    --red: #b5392f;
+    --red-dark: #8c2a22;
+    --green: #3f7a4f;
+    --pencil: #7c7567;
+    --gold: #b9912f;
+    --blue: #2c5f8a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background: repeating-linear-gradient(var(--paper) 0px, var(--paper) 33px, var(--rule) 34px);
+    background-color: var(--paper);
+    font-family:'PT Serif', serif;
+    color: var(--ink);
+  }
+  .page{
+    max-width: 760px; margin: 0 auto; position: relative;
+    padding: 28px 28px 50px 64px; min-height: 100vh;
+  }
+  .margin-line{ position:absolute; left:42px; top:0; bottom:0; width:2px; background:var(--margin); }
+  header{ margin-bottom: 18px; }
+  .eyebrow{
+    font-family:'Courier Prime', monospace; font-size:12px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--pencil);
+  }
+  h1{ font-family:'Caveat', cursive; font-weight:700; font-size:40px; line-height:1.05; margin:4px 0 6px; }
+  .subtitle{ color:var(--ink-soft); font-style:italic; font-size:15px; margin:0; }
+
+  .progress{ display:flex; gap:6px; margin: 18px 0 22px; flex-wrap:wrap; }
+  .clip{
+    width:22px; height:22px; border-radius:50%; border:2px solid var(--rule);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Courier Prime', monospace; font-size:10px; color:var(--pencil);
+    background: rgba(255,255,255,.4);
+  }
+  .clip.done{ border-color: var(--green); color: var(--green); background: rgba(63,122,79,.08); }
+  .clip.part{ border-color: var(--gold); color: var(--gold); background: rgba(185,145,47,.08); }
+  .clip.miss{ border-color: var(--red); color: var(--red); background: rgba(181,57,47,.08); }
+  .clip.active{ border-color: var(--red); color: var(--red); box-shadow: 0 0 0 3px rgba(181,57,47,.12); }
+
+  .card{
+    background: rgba(255,255,255,.55); border: 1px solid var(--rule); border-radius: 4px;
+    padding: 22px 22px 18px; margin-bottom: 18px;
+  }
+  .qnum{ font-family:'Courier Prime', monospace; color:var(--red); font-size:13px; margin-bottom:6px; }
+  .qtext{ font-size: 18px; line-height: 1.45; margin: 0 0 14px; }
+
+  .ptext{
+    background: rgba(255,255,255,.5); border: 1px dashed var(--rule); border-radius: 4px;
+    padding: 16px 18px; margin-bottom: 14px; font-size: 16.5px; line-height: 2.1;
+  }
+  .slot{
+    display:inline-block; min-width: 10px; text-align:center; cursor:pointer;
+    color: var(--rule); font-weight:700; font-size: 17px; user-select:none;
+    transition: color .12s;
+  }
+  .slot.selected{ color: var(--ink); }
+  .slot.ok{ color: var(--green); cursor:default; }
+  .slot.wrong{ color: var(--red); text-decoration: line-through; cursor:default; }
+  .slot.missed{ color: var(--gold); cursor:default; }
+
+  .feedback{
+    margin-top: 12px; padding: 10px 14px; border-radius: 3px; font-size: 15px; line-height: 1.5; display:none;
+  }
+  .feedback.show{ display:block; }
+  .feedback.ok{ background: rgba(63,122,79,.08); color: var(--green); border-left: 3px solid var(--green); }
+  .feedback.bad{ background: rgba(181,57,47,.07); color: var(--red-dark); border-left: 3px solid var(--red); }
+  .feedback.mid{ background: rgba(185,145,47,.08); color: var(--red-dark); border-left: 3px solid var(--gold); }
+
+  .explanation{
+    margin-top: 8px; padding: 10px 14px; border-radius: 3px; font-size: 14px;
+    line-height: 1.55; color: var(--ink-soft); background: rgba(44,95,138,.05);
+    border: 1px solid rgba(44,95,138,.15); display:none;
+  }
+  .explanation.show{ display:block; }
+
+  .nav{ display:flex; justify-content: space-between; margin-top: 10px; align-items:center; }
+  .btn{
+    font-family:'Caveat', cursive; font-weight:700; font-size:19px; background:var(--ink); color:var(--paper);
+    border:none; border-radius:3px; padding:7px 20px 9px; cursor:pointer; transform: rotate(-0.4deg);
+  }
+  .btn:hover{ background: var(--red-dark); }
+  .btn:disabled{ opacity:.35; cursor:default; }
+  .btn.ghost{ background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+
+  .result{ text-align:center; padding: 30px 10px; }
+  .stamp{
+    display:inline-flex; align-items:center; justify-content:center; width:130px; height:130px;
+    border-radius:50%; border:4px solid var(--red); color:var(--red); font-family:'Caveat',cursive;
+    font-weight:700; font-size:64px; transform: rotate(-8deg); margin:10px auto 18px; position:relative;
+  }
+  .stamp::before{ content:""; position:absolute; inset:-10px; border:1px dashed var(--red); border-radius:50%; opacity:.5; }
+  .result-text{ font-size:17px; color:var(--ink-soft); max-width:480px; margin:0 auto; }
+  .score-line{ font-family:'Courier Prime', monospace; color:var(--pencil); font-size:13px; margin-bottom:4px; }
+  .hidden{ display:none; }
+  footer{ text-align:center; color:var(--pencil); font-size:12px; margin-top:26px; font-family:'Courier Prime', monospace; }
+
+  @media (max-width: 480px) {
+    .page { padding: 16px 14px 36px 36px; }
+    .margin-line { left: 18px; }
+    h1 { font-size: 28px; }
+    .card { padding: 16px 14px 14px; }
+    .qtext { font-size: 16px; }
+    .ptext { font-size: 15px; padding: 12px 14px; line-height: 2.6; }
+    .slot { min-width: 28px; padding: 4px 5px; font-size: 18px; }
+    .nav { gap: 8px; }
+    .btn { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="margin-line"></div>
+
+  <header>
+    <div class="eyebrow">Пунктуация · ЕГЭ · СПП</div>
+    <h1>Запятые в сложноподчинённых предложениях</h1>
+    <p class="subtitle">Кликни на • между частями предложения, чтобы поставить запятую. Нажми «Проверить», когда готов.</p>
+  </header>
+
+  <div class="progress" id="progress"></div>
+  <div id="quizArea"></div>
+
+  <div class="card result hidden" id="resultCard">
+    <div class="score-line" id="scoreLine"></div>
+    <div class="stamp" id="stampGrade">5</div>
+    <div class="result-text" id="resultText"></div>
+    <div class="nav" style="justify-content:flex-end; margin-top:18px;">
+      <button class="btn ghost" id="retryBtn">Попробовать снова</button>
+    </div>
+  </div>
+
+  <footer>пунктуация · сложноподчинённые предложения · ЕГЭ</footer>
+</div>
+
+<script>
+const questions = [
+  {
+    type: 'punct',
+    q: "Я знал{{1}} что в этом доме давно никто не живёт{{2}} и что окна заколочены досками.",
+    slotMap: {"1": true, "2": false},
+    explanation: "Запятая 1 — перед изъяснительным придаточным «что…». Слот 2 — ловушка: «и» соединяет два однородных придаточных (что не живёт… и что окна заколочены), запятая между ними не ставится.",
+    points: 1
+  },
+  {
+    type: 'punct',
+    q: "Город{{1}} в котором я вырос{{2}} навсегда остался в моей памяти.",
+    slotMap: {"1": true, "2": true},
+    explanation: "Придаточное определительное «в котором я вырос» стоит в середине главного предложения и выделяется запятыми с обеих сторон.",
+    points: 2
+  },
+  {
+    type: 'punct',
+    q: "Когда мы вернулись домой{{1}} было уже совсем темно{{2}} и в окнах горели огни.",
+    slotMap: {"1": true, "2": false},
+    explanation: "Запятая 1 — после придаточного времени, стоящего перед главным. Слот 2 — ловушка: «и» соединяет однородные части в составе главного («было темно и горели огни»), общее придаточное относится к обеим, запятая не нужна.",
+    points: 1
+  },
+  {
+    type: 'punct',
+    q: "Я не пошёл на прогулку{{1}} потому что{{2}} с утра зарядил дождь{{3}} который не прекращался до самого вечера.",
+    slotMap: {"1": true, "2": false, "3": true},
+    explanation: "Запятая 1 — перед причинным союзом «потому что». Слот 2 — ловушка: внутри составного союза «потому что» запятая не ставится (он не расчленён). Запятая 3 — перед определительным придаточным «который…».",
+    points: 2
+  },
+  {
+    type: 'punct',
+    q: "Чтобы не опоздать на поезд{{1}} мы вышли из дома заранее{{2}} и взяли такси до вокзала.",
+    slotMap: {"1": true, "2": false},
+    explanation: "Запятая 1 — после придаточного цели «чтобы…» перед главным. Слот 2 — ловушка: «и» соединяет однородные сказуемые «вышли и взяли», запятая не нужна.",
+    points: 1
+  },
+  {
+    type: 'punct',
+    q: "Хотя солнце уже село{{1}} было ещё светло{{2}} и от реки тянуло прохладой{{3}} которая бодрила после жаркого дня.",
+    slotMap: {"1": true, "2": false, "3": true},
+    explanation: "Запятая 1 — после уступительного придаточного «хотя…». Слот 2 — ловушка: «и» соединяет однородные части главного с общим придаточным, запятая не нужна. Запятая 3 — перед определительным придаточным «которая…».",
+    points: 2
+  },
+  {
+    type: 'punct',
+    q: "Я хочу{{1}} чтобы ты понял{{2}} что{{3}} если не начать сейчас{{4}} потом будет поздно.",
+    slotMap: {"1": true, "2": true, "3": true, "4": true},
+    explanation: "Последовательное подчинение: запятая 1 — перед «чтобы», 2 — перед «что». Запятые 3 и 4 выделяют вставленное придаточное условия «если не начать сейчас» на стыке союзов «что если…»: здесь после придаточного нет второй части союза (то), поэтому запятая на стыке нужна.",
+    points: 4
+  },
+  {
+    type: 'punct',
+    q: "Он сказал{{1}} что{{2}} когда закончится дождь{{3}} то мы сразу отправимся в путь.",
+    slotMap: {"1": true, "2": false, "3": true},
+    explanation: "Запятая 1 — перед изъяснительным «что». Слот 2 — ловушка: на стыке союзов «что когда» запятая не ставится, потому что дальше идёт вторая часть союза «то». Запятая 3 — перед «то», закрывающим придаточное времени.",
+    points: 2
+  },
+  {
+    type: 'punct',
+    q: "Дом{{1}} в котором мы жили{{2}} стоял на берегу реки{{3}} и каждое утро мы видели{{4}} как над водой поднимается туман.",
+    slotMap: {"1": true, "2": true, "3": false, "4": true},
+    explanation: "Запятые 1 и 2 выделяют определительное придаточное «в котором мы жили» внутри главного. Слот 3 — ловушка: «и» соединяет однородные сказуемые «стоял и видели», запятая не нужна. Запятая 4 — перед изъяснительным придаточным «как…».",
+    points: 3
+  },
+  {
+    type: 'punct',
+    q: "Никто не знал{{1}} куда исчез старик{{2}} и почему он не оставил даже записки{{3}} хотя обещал предупредить о своём отъезде.",
+    slotMap: {"1": true, "2": false, "3": true},
+    explanation: "Запятая 1 — перед первым изъяснительным придаточным «куда…». Слот 2 — ловушка: «и» соединяет два однородных придаточных (куда исчез и почему не оставил), запятая между ними не ставится. Запятая 3 — перед уступительным придаточным «хотя…».",
+    points: 2
+  }
+];
+
+let current = 0;
+let totalScore = 0;
+const totalMaxPoints = questions.reduce((s, q) => s + q.points, 0);
+const answered = new Array(questions.length).fill(false);
+const earned = new Array(questions.length).fill(0);
+
+const quizArea = document.getElementById('quizArea');
+const progress = document.getElementById('progress');
+
+function renderProgress(){
+  progress.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    let cls = 'clip';
+    if (answered[i]) cls += earned[i] >= questions[i].points ? ' done' : earned[i] > 0 ? ' part' : ' miss';
+    if (i === current) cls += ' active';
+    d.className = cls;
+    d.textContent = i + 1;
+    progress.appendChild(d);
+  });
+}
+
+function renderQuestion(){
+  renderProgress();
+  renderPunct(questions[current]);
+}
+
+function buildPunctHtml(q){
+  let html = q.q;
+  Object.keys(q.slotMap).forEach(id => {
+    const re = new RegExp(`\\{\\{${id}\\}\\}`);
+    html = html.replace(re, `<span class="slot" data-id="${id}" data-correct="${q.slotMap[id]}">•</span>`);
+  });
+  return html;
+}
+
+function renderPunct(q){
+  const isLast = current === questions.length - 1;
+  quizArea.innerHTML = `
+    <div class="card">
+      <div class="qnum">Задание ${current + 1} из ${questions.length} · ${q.points} ${pointsLabel(q.points)}</div>
+      <p class="qtext">Расставьте запятые: кликайте на • там, где нужна запятая.</p>
+      <div class="ptext" id="ptextBox">${buildPunctHtml(q)}</div>
+      <div class="feedback" id="fb"></div>
+      <div class="explanation" id="expl"></div>
+      <div class="nav">
+        <button class="btn" id="checkBtn">Проверить</button>
+        <button class="btn" id="nextBtn" disabled>${isLast ? 'Узнать результат' : 'Далее →'}</button>
+      </div>
+    </div>
+  `;
+
+  if (answered[current]) {
+    restorePunct(q);
+  } else {
+    document.querySelectorAll('#ptextBox .slot').forEach(s => {
+      s.addEventListener('click', () => {
+        s.classList.toggle('selected');
+        s.textContent = s.classList.contains('selected') ? ',' : '•';
+      });
+    });
+    document.getElementById('checkBtn').onclick = () => checkPunct(q);
+  }
+}
+
+function checkPunct(q){
+  const slots = document.querySelectorAll('#ptextBox .slot');
+  let correctCount = 0, wrongCount = 0, missedCount = 0;
+  const needed = Object.values(q.slotMap).filter(v => v).length;
+
+  slots.forEach(s => {
+    const correct = s.dataset.correct === 'true';
+    const selected = s.classList.contains('selected');
+    if (correct && selected)       { s.classList.add('ok');     s.textContent = ','; correctCount++; }
+    else if (!correct && selected) { s.classList.add('wrong');  s.textContent = ','; wrongCount++; }
+    else if (correct && !selected) { s.classList.add('missed'); s.textContent = ','; missedCount++; }
+    else                           { s.textContent = ''; }
+  });
+
+  const pts = Math.max(0, correctCount - Math.floor(wrongCount / 2));
+  earned[current] = pts;
+  totalScore += pts;
+  answered[current] = true;
+
+  document.getElementById('checkBtn').disabled = true;
+
+  const fb = document.getElementById('fb');
+  let cls = 'ok';
+  if (wrongCount > 0 || missedCount > 0) cls = (correctCount > 0 ? 'mid' : 'bad');
+  fb.className = `feedback show ${cls}`;
+
+  let msg = '';
+  if (correctCount === needed && wrongCount === 0) {
+    msg = `Отлично! Все ${needed} запятых расставлены верно.`;
+  } else {
+    msg = `Верно: <b>${correctCount}</b> из <b>${needed}</b>.`;
+    if (wrongCount > 0) msg += ` Лишних: <b>${wrongCount}</b>.`;
+    if (missedCount > 0) msg += ` Пропущено (отмечено золотым): <b>${missedCount}</b>.`;
+  }
+  fb.innerHTML = msg;
+
+  const expl = document.getElementById('expl');
+  expl.className = 'explanation show';
+  expl.textContent = q.explanation;
+
+  document.getElementById('nextBtn').disabled = false;
+  document.getElementById('nextBtn').onclick = goNext;
+}
+
+function restorePunct(q){
+  document.getElementById('checkBtn').disabled = true;
+  const slots = document.querySelectorAll('#ptextBox .slot');
+  slots.forEach(s => {
+    const correct = s.dataset.correct === 'true';
+    if (correct) { s.classList.add('ok'); s.textContent = ','; }
+    else { s.textContent = ''; }
+  });
+  const fb = document.getElementById('fb');
+  fb.className = `feedback show ${earned[current] >= questions[current].points ? 'ok' : earned[current] > 0 ? 'mid' : 'bad'}`;
+  fb.textContent = 'Задание уже проверено.';
+  const expl = document.getElementById('expl');
+  expl.className = 'explanation show';
+  expl.textContent = q.explanation;
+  document.getElementById('nextBtn').disabled = false;
+  document.getElementById('nextBtn').onclick = goNext;
+}
+
+function goNext(){
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  quizArea.innerHTML = '';
+  renderProgress();
+  const card = document.getElementById('resultCard');
+  card.classList.remove('hidden');
+  const pct = Math.round((totalScore / totalMaxPoints) * 100);
+  let grade = 2, text = '';
+  if (pct >= 90) { grade = 5; text = 'Отличный результат! Вы уверенно различаете структуру СПП и не попадаетесь на ловушки с однородными придаточными и составными союзами.'; }
+  else if (pct >= 75) { grade = 4; text = 'Хороший результат. Есть отдельные ошибки — обратите внимание на стыки союзов и однородные придаточные.'; }
+  else if (pct >= 55) { grade = 3; text = 'Средний результат. Стоит повторить правила о составных союзах, однородных придаточных и последовательном подчинении.'; }
+  else { grade = 2; text = 'Нужна работа над темой. Вернитесь к правилам пунктуации в СПП: уделите особое внимание ловушкам с союзом «и» и стыками подчинительных союзов.'; }
+
+  const stamp = document.getElementById('stampGrade');
+  stamp.textContent = grade;
+  if (grade >= 4) {
+    stamp.style.borderColor = 'var(--green)';
+    stamp.style.color = 'var(--green)';
+  } else {
+    stamp.style.borderColor = '';
+    stamp.style.color = '';
+  }
+
+  document.getElementById('scoreLine').textContent = `Набрано баллов: ${totalScore} из ${totalMaxPoints} (${pct}%)`;
+  document.getElementById('resultText').textContent = text;
+}
+
+document.getElementById('retryBtn').onclick = () => {
+  current = 0;
+  totalScore = 0;
+  answered.fill(false);
+  earned.fill(0);
+  document.getElementById('resultCard').classList.add('hidden');
+  renderQuestion();
+};
+
+function pointsLabel(n){
+  if (n === 1) return 'балл';
+  if (n >= 2 && n <= 4) return 'балла';
+  return 'баллов';
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

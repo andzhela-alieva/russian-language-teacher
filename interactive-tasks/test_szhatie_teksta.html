@@ -1,0 +1,618 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест: Тема, идея и сжатие текста</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #f3f1e8;
+    --rule: #c9d6e3;
+    --margin: #e2a3a0;
+    --ink: #233047;
+    --ink-soft: #4b5a73;
+    --red: #b5392f;
+    --red-dark: #8c2a22;
+    --green: #3f7a4f;
+    --pencil: #7c7567;
+    --gold: #b9912f;
+    --blue: #2c5f8a;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(
+        var(--paper) 0px, var(--paper) 33px,
+        var(--rule) 34px
+      );
+    background-color: var(--paper);
+    font-family: 'PT Serif', serif;
+    color: var(--ink);
+    padding: 0;
+  }
+
+  .page{
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+    padding: 28px 28px 50px 64px;
+    min-height: 100vh;
+  }
+
+  .margin-line{
+    position: absolute;
+    left: 42px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--margin);
+  }
+
+  header{
+    margin-bottom: 18px;
+  }
+
+  .eyebrow{
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pencil);
+  }
+
+  h1{
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.05;
+    color: var(--ink);
+    margin: 4px 0 6px;
+  }
+
+  .subtitle{
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 15px;
+    margin: 0 0 4px;
+  }
+
+  /* progress: paperclips */
+  .progress{
+    display:flex;
+    gap: 6px;
+    margin: 18px 0 26px;
+    flex-wrap: wrap;
+  }
+  .clip{
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--rule);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--pencil);
+    background: rgba(255,255,255,.4);
+  }
+  .clip.done{ border-color: var(--green); color: var(--green); background: rgba(63,122,79,.08); }
+  .clip.miss{ border-color: var(--red); color: var(--red); background: rgba(181,57,47,.08); }
+  .clip.active{ border-color: var(--red); color: var(--red); box-shadow: 0 0 0 3px rgba(181,57,47,.12); }
+
+  .card{
+    background: rgba(255,255,255,.55);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 22px 22px 18px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .qnum{
+    font-family: 'Courier Prime', monospace;
+    color: var(--red);
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .qtext{
+    font-size: 18px;
+    line-height: 1.45;
+    margin: 0 0 14px;
+  }
+
+  .example{
+    background: rgba(34,48,71,.05);
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px;
+    margin: 0 0 14px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+  .example .lab{
+    font-family:'Courier Prime', monospace;
+    font-size: 11px;
+    color: var(--pencil);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    display:block;
+    margin-bottom: 3px;
+  }
+  .example .arrow{ color: var(--gold); margin: 0 6px; }
+
+  .opt{
+    display:block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    padding: 10px 14px;
+    margin-bottom: 9px;
+    font-family: 'PT Serif', serif;
+    font-size: 16px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    position: relative;
+  }
+  .opt:hover{ border-color: var(--ink-soft); }
+  .opt:disabled{ cursor: default; }
+
+  .opt.correct{
+    border-color: var(--green);
+    background: rgba(63,122,79,.08);
+  }
+  .opt.wrong{
+    border-color: var(--red);
+    background: rgba(181,57,47,.07);
+  }
+  .opt.correct::after{
+    content: "✓";
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%) rotate(-6deg);
+    color: var(--green); font-family:'Caveat',cursive; font-size:26px; font-weight:700;
+  }
+  .opt.wrong::after{
+    content: "✗";
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%) rotate(6deg);
+    color: var(--red); font-family:'Caveat',cursive; font-size:26px; font-weight:700;
+  }
+
+  .feedback{
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-size: 15px;
+    line-height: 1.5;
+    display:none;
+  }
+  .feedback.show{ display:block; }
+  .feedback.ok{ background: rgba(63,122,79,.08); color: var(--green); border-left: 3px solid var(--green); }
+  .feedback.bad{ background: rgba(181,57,47,.07); color: var(--red-dark); border-left: 3px solid var(--red); }
+  .feedback.mid{ background: rgba(185,145,47,.08); color: var(--red-dark); border-left: 3px solid var(--gold); }
+
+  .nav{
+    display:flex;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .btn{
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 19px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 3px;
+    padding: 7px 20px 9px;
+    cursor: pointer;
+    transform: rotate(-0.4deg);
+  }
+  .btn:hover{ background: var(--red-dark); }
+  .btn:disabled{ opacity: .35; cursor: default; }
+  .btn.ghost{
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+
+  /* result stamp */
+  .result{
+    text-align: center;
+    padding: 30px 10px;
+  }
+  .stamp{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    border: 4px solid var(--red);
+    color: var(--red);
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 64px;
+    transform: rotate(-8deg);
+    margin: 10px auto 18px;
+    position: relative;
+  }
+  .stamp::before{
+    content:"";
+    position:absolute; inset: -10px;
+    border: 1px dashed var(--red);
+    border-radius: 50%;
+    opacity: .5;
+  }
+  .result-text{
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .score-line{
+    font-family: 'Courier Prime', monospace;
+    color: var(--pencil);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  /* creative task */
+  .hw{
+    border: 2px dashed var(--gold);
+    background: rgba(185,145,47,.06);
+  }
+  .hw .eyebrow{ color: var(--gold); }
+  .hw textarea{
+    width: 100%;
+    min-height: 160px;
+    font-family: 'PT Serif', serif;
+    font-size: 15.5px;
+    color: var(--ink);
+    background: repeating-linear-gradient(var(--paper) 0px, var(--paper) 27px, var(--rule) 28px);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 10px 12px;
+    resize: vertical;
+    line-height: 28px;
+  }
+  .counter{
+    font-family:'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--pencil);
+    margin-top: 6px;
+    text-align: right;
+  }
+  .tips{
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .tips b{ color: var(--ink); }
+
+  .hidden{ display:none; }
+
+  footer{
+    text-align:center;
+    color: var(--pencil);
+    font-size: 12px;
+    margin-top: 30px;
+    font-family: 'Courier Prime', monospace;
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 16px 14px 36px 36px; }
+    .margin-line { left: 18px; }
+    h1 { font-size: 28px; }
+    .card { padding: 16px 14px 14px; }
+    .qtext { font-size: 16px; }
+    .example { padding: 8px 12px; font-size: 15px; }
+    .opt { padding: 12px 14px; font-size: 15px; }
+    .hw textarea { min-height: 120px; font-size: 16px; }
+    .nav { gap: 8px; }
+    .btn { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="margin-line"></div>
+
+  <header>
+    <div class="eyebrow">Русский язык · подготовка к сжатому изложению</div>
+    <h1>Тема, идея и сжатие текста</h1>
+    <p class="subtitle">10 вопросов + творческое задание. Проверьте, как вы понимаете устройство текста.</p>
+  </header>
+
+  <div class="progress" id="progress"></div>
+
+  <div id="quizArea"></div>
+
+  <div class="card result hidden" id="resultCard">
+    <div class="score-line" id="scoreLine"></div>
+    <div class="stamp" id="stampGrade">5</div>
+    <div class="result-text" id="resultText"></div>
+    <div class="nav" style="justify-content:center; margin-top:18px;">
+      <button class="btn ghost" id="retryBtn">Пройти заново</button>
+      <span style="width:12px;"></span>
+      <button class="btn" id="toHwBtn">К творческому заданию →</button>
+    </div>
+  </div>
+
+  <div class="card hw hidden" id="hwCard">
+    <div class="eyebrow">Домашнее задание · творческое</div>
+    <h1 style="font-size:30px;">Сожмите текст</h1>
+    <p class="qtext" style="font-size:16px;">Прослушайте аудиозапись текста, затем прочитайте его ниже, и напишите <b>сжатое изложение</b> (примерно в 2–2,5 раза короче), используя приёмы <b>исключения, обобщения и упрощения</b>. Важно сохранить тему, основную мысль и все микротемы.</p>
+
+    <div class="audio-wrap">
+      <span class="lab" style="font-family:'Courier Prime', monospace; font-size:11px; color:var(--pencil); text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:6px;">Аудиозапись текста</span>
+      <audio id="storyAudio" controls style="width:100%;" src="test_szhatie_teksta_audio.mp3"></audio>
+    </div>
+
+    <div class="example">
+      <span class="lab">Исходный текст</span>
+      Иметь семью и детей так же необходимо и естественно, как необходимо и естественно трудиться. Семья издавна скреплялась нравственным авторитетом отца, который традиционно считался главой. Отца дети уважали и слушались. Он занимался сельхоз работами, строительством, заготовкой леса и дров. Всю тяжесть крестьянского труда с ним разделяли взрослые сыновья. Руководство домашним хозяйством было в руках жены и матери. Она ведала всем в доме: присматривала за скотом, заботилась о питании, об одежде. Все эти работы она делала не одна. Даже дети, едва научившись ходить, понемногу, вместе с игрой, начинали делать что-то полезное. Доброта, терпимость, взаимное прощение обид перерастали в хорошей семье во взаимную любовь. Сварливость и неуживчивость считались наказанием судьбы и вызывали жалость к их носителю. Надо было уметь уступить, забыть обиду, ответить добром или промолчать. Любовь и согласие между родственниками давали начало любви за пределами дома. От человека, не любящего и не уважающего своих родных, трудно ждать уважения к другим людям.
+    </div>
+
+    <textarea id="hwAnswer" placeholder="Напишите здесь сжатое изложение текста..."></textarea>
+    <div class="counter" id="hwCounter">0 слов</div>
+
+    <div class="tips">
+      <b>Подсказка.</b> В тексте три микротемы: 1) иметь семью и детей так же естественно, как и трудиться; издавна семья скреплялась авторитетом отца, который считался главой; 2) руководство домашним хозяйством было в руках жены, ей помогали дети; 3) чтобы выстроить отношения в семье, надо было уметь уступить, ответить добром; если человек не любит своих родных, то он не может любить и других людей. Подумайте, где можно заменить перечисление обобщающим словом, где убрать повторы и подробности, а где упростить конструкцию предложения.
+    </div>
+  </div>
+
+  <footer>тема · основная мысль · идея · микротема · сжатое изложение</footer>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Что такое тема текста?",
+    opts: [
+      "То, о чём говорится в тексте — его предмет речи",
+      "Главный вывод, который делает автор",
+      "Отношение автора к описываемым событиям",
+      "Сокращённый вариант текста"
+    ],
+    correct: 0,
+    fb: { ok: "Верно. Тема — это предмет речи, то, о чём текст. Она обычно формулируется кратко: «текст о...».",
+          bad: "Тема — это именно то, о чём текст, его предмет речи. Это не вывод и не отношение автора." }
+  },
+  {
+    q: "Что такое основная мысль текста?",
+    opts: [
+      "Перечень всех событий текста",
+      "То главное, что хочет сказать автор, ради чего написан текст",
+      "Первое предложение текста",
+      "Список ключевых слов"
+    ],
+    correct: 1,
+    fb: { ok: "Точно. Основная мысль — это итог, главный смысл, ради которого создан текст; на её основе формулируют вывод.",
+          bad: "Основная мысль — это не события и не ключевые слова, а та главная мысль-вывод, ради которой текст написан." }
+  },
+  {
+    q: "Чем идея текста отличается от темы?",
+    opts: [
+      "Идея и тема — это абсолютно одно и то же",
+      "Идея — это название текста",
+      "Тема отвечает на вопрос «о чём текст», а идея (как и основная мысль) — «что хотел сказать автор, какова его позиция»",
+      "Идея есть только в научных текстах"
+    ],
+    correct: 2,
+    fb: { ok: "Верно: тема — это предмет, а идея близка к основной мысли — это позиция и замысел автора, его «послание» читателю.",
+          bad: "Тема и идея не синонимы: тема — предмет речи, а идея — это смысл, позиция автора, его замысел." }
+  },
+  {
+    q: "Что такое микротема текста?",
+    opts: [
+      "Тема, не связанная с основным текстом",
+      "Тема отдельной смысловой части (абзаца), составляющая часть общей темы текста",
+      "Самое короткое предложение текста",
+      "Заключение текста"
+    ],
+    correct: 1,
+    fb: { ok: "Да, микротема — это «мини-тема» одного абзаца или смысловой части; сумма микротем складывается в общую тему текста.",
+          bad: "Микротема — это тема конкретной смысловой части (абзаца), а не отдельное предложение или заключение." }
+  },
+  {
+    q: "Как обычно соотносятся микротемы и абзацы в тексте?",
+    opts: [
+      "Никак не связаны",
+      "Микротем всегда больше, чем абзацев",
+      "Как правило, одна микротема раскрывается в одном абзаце (или смысловой части)",
+      "Микротема — это синоним слова «абзац»"
+    ],
+    correct: 2,
+    fb: { ok: "Верно — обычно границы абзацев совпадают с границами микротем, поэтому при изложении удобно сжимать текст по абзацам.",
+          bad: "Чаще всего одна микротема соответствует одному абзацу — это и помогает делить текст на смысловые части при изложении." }
+  },
+  {
+    q: "Что такое сжатое изложение?",
+    opts: [
+      "Текст, пересказанный близко к оригиналу почти без изменений",
+      "Письменный пересказ текста, в котором сохранены тема, основная мысль и микротемы, но уменьшен объём за счёт приёмов сжатия",
+      "Краткий план текста из одних заголовков",
+      "Сочинение на тему текста"
+    ],
+    correct: 1,
+    fb: { ok: "Точно. Главное в сжатом изложении — сократить объём, не потеряв тему, основную мысль и все микротемы исходного текста.",
+          bad: "Сжатое изложение — это не план и не сочинение, а пересказ текста с сохранением смысла, но в сокращённом виде." }
+  },
+  {
+    q: "Определите приём сжатия:\nДо: «На столе лежали яблоки, груши, апельсины и бананы».\nПосле: «На столе лежали фрукты».",
+    example: { label: "Трансформация", before: "На столе лежали яблоки, груши, апельсины и бананы.", after: "На столе лежали фрукты." },
+    opts: ["Исключение", "Обобщение", "Упрощение"],
+    correct: 1,
+    fb: { ok: "Верно! Однородные конкретные слова заменены одним обобщающим понятием — это обобщение.",
+          bad: "Здесь несколько конкретных слов заменены одним общим словом «фрукты» — это приём обобщения." }
+  },
+  {
+    q: "Определите приём сжатия:",
+    example: { label: "Трансформация", before: "Весной, когда снег начал таять, а на деревьях появились первые зелёные листочки, и птицы вернулись из тёплых краёв, в лесу стало особенно красиво.", after: "Весной в лесу стало особенно красиво." },
+    opts: ["Исключение", "Обобщение", "Упрощение"],
+    correct: 0,
+    fb: { ok: "Верно! Подробности и детали (про снег, листочки, птиц) просто убраны, осталась главная мысль предложения — это исключение.",
+          bad: "Здесь убраны подробности и детали без замены их обобщающим словом — это приём исключения." }
+  },
+  {
+    q: "Определите приём сжатия:",
+    example: { label: "Трансформация", before: "Мальчик, который только что вернулся из школы и очень устал, сразу сел делать уроки.", after: "Вернувшись из школы, мальчик сразу сел делать уроки." },
+    opts: ["Исключение", "Обобщение", "Упрощение"],
+    correct: 2,
+    fb: { ok: "Верно! Сложное предложение с придаточной частью заменено более простой и короткой конструкцией с деепричастным оборотом — это упрощение.",
+          bad: "Здесь сложная конструкция (придаточное предложение) заменена на более простую и короткую — это приём упрощения." }
+  },
+  {
+    q: "Что обязательно нужно сохранить при сжатии текста?",
+    opts: [
+      "Все эпитеты и художественные подробности автора",
+      "Тему, основную мысль (идею) и все микротемы текста",
+      "Точное количество предложений, как в оригинале",
+      "Прямую речь героев слово в слово"
+    ],
+    correct: 1,
+    fb: { ok: "Именно так: сокращать можно детали и подробности, но тема, основная мысль и каждая микротема должны остаться в изложении.",
+          bad: "Художественные детали и точное число предложений можно убирать. А вот тема, основная мысль и все микротемы — должны сохраниться." }
+  }
+];
+
+let current = 0;
+let score = 0;
+const answered = new Array(questions.length).fill(false);
+const correct  = new Array(questions.length).fill(false);
+
+const quizArea = document.getElementById('quizArea');
+const progress = document.getElementById('progress');
+
+function renderProgress(){
+  progress.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    let cls = 'clip';
+    if (answered[i]) cls += correct[i] ? ' done' : ' miss';
+    if (i === current) cls += ' active';
+    d.className = cls;
+    d.textContent = i + 1;
+    progress.appendChild(d);
+  });
+}
+
+function renderQuestion(){
+  renderProgress();
+  const q = questions[current];
+  let exampleHtml = '';
+  if (q.example) {
+    exampleHtml = `<div class="example">
+      <span class="lab">${q.example.label}</span>
+      До: «${q.example.before}»<span class="arrow">→</span>После: «${q.example.after}»
+    </div>`;
+  }
+  quizArea.innerHTML = `
+    <div class="card">
+      <div class="qnum">Вопрос ${current + 1} из ${questions.length}</div>
+      <p class="qtext">${q.q.replace(/\n/g, '<br>')}</p>
+      ${exampleHtml}
+      <div id="opts"></div>
+      <div class="feedback" id="fb"></div>
+      <div class="nav" style="justify-content:flex-end;">
+        <button class="btn" id="nextBtn" disabled>${current === questions.length - 1 ? 'Узнать результат' : 'Далее →'}</button>
+      </div>
+    </div>
+  `;
+  const optsWrap = document.getElementById('opts');
+  q.opts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = opt;
+    b.onclick = () => selectAnswer(i);
+    optsWrap.appendChild(b);
+  });
+
+  if (answered[current]) {
+    lockQuestion(q.userChoice);
+  }
+}
+
+function selectAnswer(i){
+  const q = questions[current];
+  if (answered[current]) return;
+  q.userChoice = i;
+  answered[current] = true;
+  correct[current] = (i === q.correct);
+  if (i === q.correct) score++;
+  lockQuestion(i);
+  renderProgress();
+}
+
+function lockQuestion(chosenIndex){
+  const q = questions[current];
+  const buttons = document.querySelectorAll('#opts .opt');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    if (i === chosenIndex && chosenIndex !== q.correct) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb');
+  const isCorrect = chosenIndex === q.correct;
+  fb.classList.add('show', isCorrect ? 'ok' : 'bad');
+  fb.textContent = isCorrect ? q.fb.ok : q.fb.bad;
+  document.getElementById('nextBtn').disabled = false;
+  document.getElementById('nextBtn').onclick = goNext;
+}
+
+function goNext(){
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  quizArea.innerHTML = '';
+  renderProgress();
+  const card = document.getElementById('resultCard');
+  card.classList.remove('hidden');
+  const pct = Math.round((score / questions.length) * 100);
+  let grade = 2, text = '';
+  if (score >= 9) { grade = 5; text = 'Отличный результат! Вы свободно отличаете тему от идеи и хорошо чувствуете приёмы сжатия текста.'; }
+  else if (score >= 7) { grade = 4; text = 'Хороший результат. Основные понятия усвоены, но стоит ещё раз посмотреть на разницу между приёмами сжатия.'; }
+  else if (score >= 5) { grade = 3; text = 'Неплохо, но есть пробелы. Повторите определения темы, идеи и микротемы перед изложением.'; }
+  else { grade = 2; text = 'Стоит вернуться к теории: тема, основная мысль, микротема и приёмы сжатия — основа для сжатого изложения.'; }
+  document.getElementById('stampGrade').textContent = grade;
+  document.getElementById('scoreLine').textContent = `Правильных ответов: ${score} из ${questions.length} (${pct}%)`;
+  document.getElementById('resultText').textContent = text;
+}
+
+document.getElementById('retryBtn').onclick = () => {
+  current = 0; score = 0;
+  answered.fill(false);
+  correct.fill(false);
+  questions.forEach(q => delete q.userChoice);
+  document.getElementById('resultCard').classList.add('hidden');
+  document.getElementById('hwCard').classList.add('hidden');
+  renderQuestion();
+};
+
+document.getElementById('toHwBtn').onclick = () => {
+  document.getElementById('resultCard').classList.add('hidden');
+  document.getElementById('hwCard').classList.remove('hidden');
+};
+
+const hwAnswer = document.getElementById('hwAnswer');
+const hwCounter = document.getElementById('hwCounter');
+hwAnswer.addEventListener('input', () => {
+  const words = hwAnswer.value.trim().split(/\s+/).filter(Boolean).length;
+  hwCounter.textContent = words + ' слов';
+});
+
+renderQuestion();
+</script>
+</body>
+</html>

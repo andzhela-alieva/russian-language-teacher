@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Репетитор русского языка. Подготовка к ОГЭ и ЕГЭ онлайн и очно. Объясняю через логику языка, не через зубрёжку.">
+  <title>Анджела Кузьмина — репетитор русского языка</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper:    #f3f1e8;
+      --rule:     #c9d6e3;
+      --margin:   #e2a3a0;
+      --ink:      #233047;
+      --ink-soft: #4b5a73;
+      --red:      #b5392f;
+      --red-dark: #8c2a22;
+      --green:    #3f7a4f;
+      --pencil:   #7c7567;
+      --gold:     #b9912f;
+      --blue:     #2c5f8a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: repeating-linear-gradient(var(--paper) 0px, var(--paper) 33px, var(--rule) 34px);
+      background-color: var(--paper);
+      font-family: 'PT Serif', serif;
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .margin-line {
+      position: absolute;
+      left: 42px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--margin);
+      pointer-events: none;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 28px 50px 64px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pencil);
+    }
+
+    h1 {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 52px;
+      line-height: 1.05;
+      margin: 6px 0 10px;
+      text-wrap: balance;
+    }
+
+    h2 {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 1.1;
+      margin: 0 0 20px;
+      text-wrap: balance;
+    }
+
+    .btn {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 19px;
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      border-radius: 3px;
+      padding: 7px 20px 9px;
+      cursor: pointer;
+      transform: rotate(-0.4deg);
+      transition: background 0.15s ease-out;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .btn:hover { background: var(--red-dark); }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--red);
+      outline-offset: 2px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 22px;
+    }
+
+    /* Hero */
+    .hero {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      margin-top: 8px;
+    }
+
+    .hero-photo {
+      width: 200px;
+      max-height: 260px;
+      flex-shrink: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      display: block;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .hero-subtitle {
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ink-soft);
+      margin: 0 0 22px;
+      line-height: 1.5;
+    }
+
+    /* Sections */
+    .section {
+      margin-top: 0;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px dashed var(--rule);
+      margin: 40px 0;
+    }
+
+    /* For whom */
+    .audience-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: audience;
+    }
+
+    .audience-list li {
+      counter-increment: audience;
+      display: flex;
+      gap: 16px;
+      font-size: 18px;
+      line-height: 1.6;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--rule);
+    }
+
+    .audience-list li:last-child {
+      border-bottom: none;
+    }
+
+    .audience-list li::before {
+      content: counter(audience);
+      font-family: 'Courier Prime', monospace;
+      font-size: 13px;
+      color: var(--pencil);
+      flex-shrink: 0;
+      padding-top: 3px;
+      min-width: 16px;
+    }
+
+    /* How it works */
+    .how-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .how-list li {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .how-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--pencil);
+      font-family: 'Courier Prime', monospace;
+    }
+
+    /* Carousel */
+    .carousel {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .carousel-track-wrap {
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.35s ease-out;
+      will-change: transform;
+      align-items: center;
+    }
+
+    .carousel-slide {
+      min-width: 33.333%;
+      padding: 0 6px;
+      box-sizing: border-box;
+      transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+      opacity: 0.45;
+      transform: scale(0.88);
+    }
+
+    .carousel-slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--rule);
+      display: block;
+      box-shadow: none;
+    }
+
+    .carousel-btn {
+      background: transparent;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      color: var(--ink);
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s ease-out, color 0.15s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .carousel-btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .carousel-btn:focus-visible {
+      outline: 2px solid var(--red);
+      outline-offset: 2px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--rule);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.15s ease-out;
+    }
+
+    .carousel-dot.is-active {
+      background: var(--red);
+    }
+
+    /* Enrollment banner */
+    .enrollment-banner {
+      background: rgba(181, 57, 47, 0.07);
+      border: 2px solid var(--red);
+      border-radius: 4px;
+      padding: 18px 20px 18px 52px;
+      position: relative;
+      margin-bottom: 0;
+    }
+
+    .enrollment-banner::before {
+      content: "!";
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--paper);
+      background: var(--red);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .enrollment-banner strong {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--red);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .enrollment-banner p {
+      margin: 0 0 12px;
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .enrollment-banner p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .enrollment-banner .enroll-cta {
+      display: inline-block;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--red);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--red);
+      padding-bottom: 1px;
+      transition: opacity 0.15s;
+    }
+
+    .enrollment-banner .enroll-cta:hover {
+      opacity: 0.7;
+    }
+
+    /* About */
+    .about-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .about-tag {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 5px 10px;
+      display: inline-block;
+    }
+
+    .about-offers {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .about-offers li {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--ink);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .about-offers li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--pencil);
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .about-rki {
+      background: rgba(44, 95, 138, 0.07);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 3px 3px 0;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .about-rki-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .about-rki p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    .about-format {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      color: var(--pencil);
+      line-height: 2;
+      margin: 0;
+    }
+
+    /* Prices */
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+    }
+
+    .price-table tr {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .price-table tr:first-child {
+      border-top: 2px solid var(--margin);
+    }
+
+    .price-table tr:last-child {
+      border-bottom: 2px solid var(--margin);
+    }
+
+    .price-table td {
+      padding: 16px 0;
+      vertical-align: middle;
+    }
+
+    .price-table .pt-name {
+      font-size: 17px;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .price-table .pt-sub {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      color: var(--pencil);
+      display: block;
+      margin-top: 3px;
+    }
+
+    .price-table .pt-price {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 34px;
+      color: var(--ink);
+      white-space: nowrap;
+      text-align: right;
+      padding-left: 20px;
+    }
+
+    .price-table .pt-price.accent {
+      color: var(--red);
+    }
+
+    .price-note {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      color: var(--pencil);
+      margin-top: 12px;
+      display: block;
+    }
+
+    /* Contact */
+    .contact-text {
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0 0 20px;
+    }
+
+    .contact-handle {
+      font-family: 'Courier Prime', monospace;
+      font-size: 13px;
+      color: var(--pencil);
+      display: block;
+      margin-top: 10px;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 20, 20, 0.92);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 92vw;
+      max-height: 92vh;
+      border-radius: 4px;
+      object-fit: contain;
+      cursor: default;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 36px;
+      color: rgba(255,255,255,0.7);
+      background: none;
+      border: none;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+    .lightbox-close:hover { color: #fff; }
+    .carousel-slide img { cursor: pointer; }
+
+    /* Footer */
+    footer {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      color: var(--pencil);
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .margin-line { display: none; }
+
+      .page {
+        padding: 20px 16px 40px 16px;
+      }
+
+      h1 { font-size: 40px; }
+
+      .hero {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .hero-photo {
+        width: 100%;
+        max-height: 280px;
+        object-fit: cover;
+      }
+
+      .carousel-slide {
+        min-width: 100%;
+        opacity: 1;
+        transform: scale(1);
+      }
+      .carousel-slide:not(.is-active) {
+        display: none;
+      }
+
+      .price-table .pt-price {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="margin-line"></div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <img class="hero-photo" src="photo.jpg" alt="Анджела Кузьмина — репетитор русского языка">
+      <div class="hero-text">
+        <div class="eyebrow">Репетитор русского языка</div>
+        <h1>Анджела Кузьмина</h1>
+        <p class="hero-subtitle">Готовлю к ОГЭ и ЕГЭ: онлайн и очно. Объясняю так, что хочется разобраться.</p>
+        <a class="btn" href="https://t.me/AndzhelaAlieva" target="_blank" rel="noopener">Написать в Telegram →</a>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Набор учеников -->
+    <div class="enrollment-banner">
+      <strong>Набор на 2026–2027 учебный год</strong>
+      <p>Ведётся набор учеников на индивидуальные занятия по русскому языку — очно и онлайн. Места ещё есть.</p>
+      <a class="enroll-cta" href="https://t.me/AndzhelaAlieva" target="_blank" rel="noopener">Написать в Telegram →</a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- О себе -->
+    <section class="section">
+      <h2>О себе</h2>
+
+      <div class="about-meta">
+        <span class="about-tag">Репетитор · русский язык · 5–11 классы, РКИ</span>
+        <span class="about-tag">Высшее образование · аспирантура</span>
+        <span class="about-tag">Кандидат филологических наук</span>
+        <span class="about-tag">Опыт 8 лет · школа и университет</span>
+        <span class="about-tag">Методист по русскому языку · АОИОО, Архангельск</span>
+      </div>
+
+      <ul class="about-offers">
+        <li>Подготовлю к сдаче ОГЭ и ЕГЭ по русскому языку на высокие баллы</li>
+        <li>Подготовлю к ВПР, МЦКО, контрольным работам по русскому языку</li>
+        <li>Помогу в подготовке домашнего задания</li>
+        <li>Ликвидирую пробелы и помогу освоить сложные темы — просто и с интересом</li>
+        <li>Подготовлю к сдаче сертификационных экзаменов по РКИ</li>
+      </ul>
+
+      <div class="about-rki">
+        <span class="about-rki-label">РКИ</span>
+        <p>Есть опыт работы с иностранными студентами в университете (САФУ), диплом преподавателя РКИ. Работаю с аудиторией уровня от А0 до С1 — элементарный, базовый, продвинутый.</p>
+      </div>
+
+      <p class="about-format">Очно и дистанционно (Zoom) · интерактивные платформы · авторские разработки · автор уроков по РКИ на платформе Youlang · для связи писать в Telegram</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Для кого -->
+    <section class="section">
+      <h2>Кому подойдут занятия</h2>
+      <ul class="audience-list">
+        <li>Ученики 9–11 класса — подготовка к ОГЭ и ЕГЭ по русскому языку</li>
+        <li>Те, кто хочет подтянуть оценки и разобраться в грамматике без зубрёжки</li>
+        <li>Школьники, которым не подошёл предыдущий репетитор и нужен другой подход</li>
+      </ul>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Как строятся занятия -->
+    <section class="section">
+      <h2>Как строятся занятия</h2>
+      <ul class="how-list">
+        <li>Начинаю с диагностики: смотрю, что ученик уже знает — не прохожу программу с нуля.</li>
+        <li>Объясняю через логику языка, а не через правило-исключение. Когда понятно почему — запоминается само.</li>
+        <li>После каждого занятия присылаю родителям короткий отчёт: что разобрали, что повторить дома.</li>
+        <li>Готовлюсь к каждому уроку отдельно — материал под конкретного ученика, не шаблонный.</li>
+      </ul>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Отзывы -->
+    <section class="section" id="reviews">
+      <h2>Что говорят родители и ученики</h2>
+      <div class="carousel">
+        <button class="carousel-btn carousel-btn--prev" aria-label="Предыдущий">&#8592;</button>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="feedback-sreens/3bUXBdavsv3YTr0p7CViO6UL6UXzGARqt4fw365cmh8pmtYbP6lbY98xQoJhcX8ZTlGQXX-_ScLd8AGuk8haPiAS.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/41BQwsbq3gEwkhuA54VM0vQIgcbOEQIBlDnwS6ILK31og1ChWuTDSVKLPojZ_z5bxjGD3t0yhJvE0DrD5W30GD00.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/4c_LzyVsMZiWyvg0xEWI48b_nWoFBjQ4qvdpm3DbU0ysIhE5aai4kHK77-y8TkUgIgUY7jJlJWsSmZDLYd9Zzxs_.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/BS0U-5koQeF7ZMRztn2-W7PFbCV8BdmJiOQdl78X7QpKYyIwkpme81TJZOu0BckCcZ7EMGfpPZzkkA9ryXC72o7M.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/BYxSyjIfULgo0Ok75J1ZG8Adpulj_aI9r14JxqLxyCuzG44YqrPFJ6AcEUJRzpjW6RnFFtf4TqAzJFRh4UH0fS8r.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/CATNccoHnG9Ry-OvaIe-q1VkTuxNUn8EO7zhcQqxhEL450XEyx7r-H4Xb47JQjE6OenNF3trnLg6olCoB_KLECeg.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/EXXgvu-g-Z-nYWS3DtpYWwdCFp7j79QxcaSTakh15Io-m0HjWBs-sUagHXU424ukR9QcYlGNt9cxDLo6hTEoWg8b.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/liUrNXXMnW9vodQbICFrHwg9aC2EBWgq0BDmZzeFhkLmWmzm7j6cl5qp8_03wRISX7GAiX0dfTO5hPuL5tUYyXtB.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/njaNmmF3zXe_DKT_fwIK8aFKW432URHrp69iHF4wcZuQWUmr9HEbcsCui7s-aSDiKAV6nDbehFkqnHI2ZzccorUe.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/OpzXE9DuC5Xn4N4XYj-UhVoIKngXJY92f-RgzT2pSzsMQRWtybuGNFb-fjcN13bLgB7RkvEVnB7VK_2F1jcGpnuA.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/Q1cfhpM_Ph-4ahvZFBfAv9-xNWt6t5LfhMr4lqVt_pSSeqE5dcKBdAYY2nOnM-XTZeZU7Bf3mdinRnhhnVJ5JxZI.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/sAbAN_AD3VuppqQllbmxZq60UiGDP-d2_EjNZvJ6bSzkIDR5Kv0XHITMPvmYjXbP1_5lHkLPwlSJY_pfUzJS-fhP.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/VUWZcqQJXkf_X-_nntnJeYejzl19XokLeDF9QIdSNu71mN_IHNtM39Un5IA50XCWGvImfanQIJrlq7fY6jUj9sXw.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/WvBQTKmWAMnTn11y4kPHQyhQjHFKH9CGhNA-qnFOKZ3gGwiDxKKQV-ivZsXLTQL4RwqQEDdnWMHiVT-rGw8P9SH4.jpg" alt="Отзыв" loading="lazy"></div>
+            <div class="carousel-slide"><img src="feedback-sreens/x1xJGbtiw7h50xkFIjHk0leueFSBQ58xS21jgIzmOQgxHH3r04Y0N-EZPtoR6PtAFtjxyFF5TlD-9FhwXt3qaJw_.jpg" alt="Отзыв" loading="lazy"></div>
+          </div>
+        </div>
+        <button class="carousel-btn carousel-btn--next" aria-label="Следующий">&#8594;</button>
+      </div>
+      <div class="carousel-dots"></div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Цены -->
+    <section class="section">
+      <h2>Стоимость занятий</h2>
+      <table class="price-table">
+        <tr>
+          <td class="pt-name">
+            Подготовка к ОГЭ по русскому языку
+            <span class="pt-sub">60 минут</span>
+          </td>
+          <td class="pt-price">1 100 ₽</td>
+        </tr>
+        <tr>
+          <td class="pt-name">
+            Подготовка к ЕГЭ по русскому языку
+            <span class="pt-sub">60 минут</span>
+          </td>
+          <td class="pt-price accent">1 200 ₽</td>
+        </tr>
+        <tr>
+          <td class="pt-name">Повышение успеваемости</td>
+          <td class="pt-price">от 1 000 ₽</td>
+        </tr>
+        <tr>
+          <td class="pt-name">
+            Занятия по РКИ
+            <span class="pt-sub">русский язык как иностранный</span>
+          </td>
+          <td class="pt-price">1 100 ₽</td>
+        </tr>
+      </table>
+      <span class="price-note">Очно и онлайн</span>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Контакт -->
+    <section class="section">
+      <h2>Готовы начать?</h2>
+      <p class="contact-text">Напишите — обсудим задачу и договоримся о пробном занятии.</p>
+      <a class="btn" href="https://t.me/AndzhelaAlieva" target="_blank" rel="noopener">Написать в Telegram →</a>
+      <span class="contact-handle">@AndzhelaAlieva</span>
+    </section>
+
+    <footer>© 2026 Анджела Магомед-Гаджиевна Кузьмина</footer>
+
+  </div>
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+    <img id="lightboxImg" src="" alt="Отзыв">
+  </div>
+
+  <script>
+    (function() {
+      const track = document.querySelector('.carousel-track');
+      const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+      const dotsContainer = document.querySelector('.carousel-dots');
+      const btnPrev = document.querySelector('.carousel-btn--prev');
+      const btnNext = document.querySelector('.carousel-btn--next');
+      const total = slides.length;
+      let current = 0;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('aria-label', 'Перейти к ' + (i + 1));
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+
+      function isMobile() { return window.innerWidth <= 480; }
+
+      function goTo(index) {
+        slides[current].classList.remove('is-active');
+        dotsContainer.children[current].classList.remove('is-active');
+        current = (index + total) % total;
+        slides[current].classList.add('is-active');
+        dotsContainer.children[current].classList.add('is-active');
+        if (isMobile()) {
+          track.style.transform = '';
+        } else {
+          const shift = Math.max(0, Math.min(current - 1, total - 3));
+          track.style.transform = 'translateX(-' + (shift * (100 / 3)) + '%)';
+        }
+      }
+
+      slides[0].classList.add('is-active');
+
+      btnPrev.addEventListener('click', () => goTo(current - 1));
+      btnNext.addEventListener('click', () => goTo(current + 1));
+
+      let startX = 0;
+      track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend', function(e) {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) goTo(dx < 0 ? current + 1 : current - 1);
+      }, { passive: true });
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        track.style.transition = 'none';
+        slides.forEach(function(s) { s.style.transition = 'none'; });
+      }
+    })();
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    document.getElementById('lightboxClose').onclick = closeLightbox;
+    lightbox.addEventListener('click', function(e) { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+    function closeLightbox() { lightbox.classList.remove('open'); lightboxImg.src = ''; }
+    document.querySelector('.carousel-track').addEventListener('click', function(e) {
+      var img = e.target.closest('img');
+      if (img) {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      }
+    });
+  </script>
+
+</body>
+</html>

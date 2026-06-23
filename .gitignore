@@ -1,0 +1,14 @@
+# Cloudflare / Wrangler
+.wrangler/
+
+# Claude Code internals
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.swp
