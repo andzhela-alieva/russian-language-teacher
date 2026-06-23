@@ -24,8 +24,8 @@ Key rules (full detail in DESIGN.md):
 ```css
 --paper: #f3f1e8; --rule: #c9d6e3; --margin: #e2a3a0;
 --ink: #233047;   --ink-soft: #4b5a73;
---red: #b5392f;   --red-dark: #8c2a22; --green: #3f7a4f;
---pencil: #7c7567; --gold: #b9912f;    --blue: #2c5f8a;
+--red: #b5392f;   --red-dark: #8c2a22; --green: #3f7a4f; --green-dark: #2d5e3a;
+--pencil: #665f56; --gold: #b9912f;    --blue: #2c5f8a;
 ```
 
 **Typography:** body `'PT Serif'`, h1 `'Caveat'` 700 40px, labels/numbers `'Courier Prime'`. All three loaded from Google Fonts.

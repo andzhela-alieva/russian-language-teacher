@@ -10,7 +10,8 @@ colors:
   red: "#b5392f"
   red-dark: "#8c2a22"
   green: "#3f7a4f"
-  pencil: "#7c7567"
+  green-dark: "#2d5e3a"
+  pencil: "#665f56"
   gold: "#b9912f"
   blue: "#2c5f8a"
 typography:

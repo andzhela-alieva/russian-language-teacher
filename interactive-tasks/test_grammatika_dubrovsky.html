@@ -16,7 +16,8 @@
     --red: #b5392f;
     --red-dark: #8c2a22;
     --green: #3f7a4f;
-    --pencil: #7c7567;
+    --green-dark: #2d5e3a;
+    --pencil: #665f56;
     --gold: #b9912f;
     --blue: #2c5f8a;
   }
@@ -147,7 +148,7 @@
     margin-top: 12px; padding: 10px 14px; border-radius: 3px; border: 1px solid transparent; font-size: 15px; line-height: 1.5; display:none;
   }
   .feedback.show{ display:block; }
-  .feedback.ok{ background: rgba(63,122,79,.08); color: var(--green); border-color: var(--green); }
+  .feedback.ok{ background: rgba(63,122,79,.08); color: var(--green-dark); border-color: var(--green); }
   .feedback.bad{ background: rgba(181,57,47,.07); color: var(--red-dark); border-color: var(--red); }
   .feedback.mid{ background: rgba(185,145,47,.08); color: var(--red-dark); border-color: var(--gold); }
 
@@ -159,6 +160,7 @@
   .btn:hover{ background: var(--red-dark); }
   .btn:disabled{ opacity:.35; cursor:default; }
   .btn.ghost{ background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .btn:focus-visible, .opt:focus-visible, .mbtn:focus-visible, .gbtn:focus-visible, .back-link:focus-visible, .reveal-sample:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   .result{ text-align:center; padding: 30px 10px; }
   .stamp{
@@ -170,8 +172,8 @@
   .result-text{ font-size:17px; color:var(--ink-soft); max-width:480px; margin:0 auto; }
   .score-line{ font-family:'Courier Prime', monospace; color:var(--pencil); font-size:13px; margin-bottom:4px; }
   .hidden{ display:none; }
-  .back-link{ font-family:'Courier Prime',monospace; font-size:12px; color:var(--pencil); text-decoration:none; letter-spacing:.05em; display:inline-block; margin-bottom:16px; }
-  .back-link:hover{ color:var(--ink); }
+  .back-link{ font-family:'Courier Prime',monospace; font-size:13px; color:var(--ink-soft); text-decoration:none; letter-spacing:.05em; display:inline-block; margin-bottom:20px; border:1px solid var(--ink-soft); padding:5px 12px; border-radius:3px; transition:color .15s, border-color .15s, background .15s; }
+  .back-link:hover{ color:var(--ink); border-color:var(--ink); background:rgba(35,48,71,.05); }
   footer{ text-align:center; color:var(--pencil); font-size:12px; margin-top:26px; font-family:'Courier Prime', monospace; }
 
   @media (max-width: 480px) {
@@ -198,7 +200,8 @@
     .gbtn { padding: 10px 16px; font-size: 14px; }
 
     .nav { gap: 8px; }
-    .btn { font-size: 18px; }
+    .btn { font-size: 18px; min-height: 44px; }
+    .opt { min-height: 44px; }
   }
 </style>
 </head>
@@ -348,6 +351,9 @@ function renderProgress(){
     if (i === current) cls += ' active';
     d.className = cls;
     d.textContent = i + 1;
+    const status = !answered[i] ? 'не отвечено' : earned[i] > 0 ? 'выполнено' : 'без баллов';
+    d.setAttribute('aria-label', `Задание ${i+1} из ${questions.length}: ${status}`);
+    if (i === current) d.setAttribute('aria-current', 'step');
     progress.appendChild(d);
   });
 }

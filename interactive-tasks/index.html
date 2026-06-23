@@ -16,7 +16,8 @@
       --red:      #b5392f;
       --red-dark: #8c2a22;
       --green:    #3f7a4f;
-      --pencil:   #7c7567;
+      --green-dark: #2d5e3a;
+      --pencil:   #665f56;
       --gold:     #b9912f;
       --blue:     #2c5f8a;
     }
@@ -110,6 +111,8 @@
       line-height: 1;
     }
     .search-clear:hover { color: var(--ink); }
+    .task-card:focus-visible, .search-clear:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+    .search-input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
     /* Task list */
     .task-list { display: flex; flex-direction: column; gap: 14px; }

@@ -16,7 +16,8 @@
   --red:      #b5392f;   /* ошибки, акценты */
   --red-dark: #8c2a22;   /* hover кнопки, тёмный красный */
   --green:    #3f7a4f;   /* правильный ответ */
-  --pencil:   #7c7567;   /* подписи, footer */
+  --green-dark: #2d5e3a; /* текст верной обратной связи (WCAG AA ≥4.5:1) */
+  --pencil:   #665f56;   /* подписи, footer */
   --gold:     #b9912f;   /* частично / пропущено */
   --blue:     #2c5f8a;   /* информационные выделения */
 }
@@ -321,17 +322,6 @@ footer {
 
 ---
 
-## Расхождения между существующими файлами (нужно привести к эталону)
+## Расхождения между существующими файлами
 
-| Файл | Параметр | Текущее значение | Эталон |
-|---|---|---|---|
-| `test_szhatie_teksta.html` | `--blue` в `:root` | **отсутствует** | добавить `--blue: #2c5f8a;` |
-| `test_szhatie_teksta.html` | `.page max-width` | `720px` | `760px` |
-| `test_szhatie_teksta.html` | `h1 font-size` | `44px` | `40px` |
-| `test_szhatie_teksta.html` | `.qtext font-size` | `19px` | `18px` |
-| `test_szhatie_teksta.html` | `.btn` font-size | `20px` | `19px` |
-| `test_szhatie_teksta.html` | `.btn` padding | `8px 22px 10px` | `7px 20px 9px` |
-| `test_szhatie_teksta.html` | `.nav` justify-content | `flex-end` (глобально) | `space-between` по умолчанию; `flex-end` только если кнопка одна |
-| `test_szhatie_teksta.html` | `header margin-bottom` | `22px` | `18px` |
-| `test_szhatie_teksta.html` | `.page` padding-bottom | `28px` | `50px` |
-| `test_szhatie_teksta.html` | `.feedback.mid` | **отсутствует** | добавить (gold-вариант для частичного результата) |
+Все ранее зафиксированные расхождения устранены (аудит 2026-06-24). Таблица очищена.
