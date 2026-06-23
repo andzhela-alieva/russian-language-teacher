@@ -83,6 +83,7 @@ Agent(
      - Аудитория и тема
      - Список вопросов: только тип и краткое назначение каждого (НЕ сами вопросы — их создаёт методист)
      - Если похожее задание уже есть — укажи чем это новое отличается
+     - Eyebrow-строка для страницы-индекса: короткая, через · , например «Пунктуация · ЕГЭ · СПП» — тема, класс/экзамен, ключевые теги
   4. Верни ТЗ текстом. Не задавай вопросов учителю."
 )
 ```
@@ -150,6 +151,21 @@ Agent(
   - Все правила дизайн-системы обязательны
   - Вызови /impeccable polish после завершения
   - Не спрашивай подтверждений — реализуй полностью
+
+  Обязательные интеграции с системой (не пропускать):
+
+  1. Ссылка «назад» — сразу после <div class=\"margin-line\"></div> в HTML:
+     <a class=\"back-link\" href=\"index.html\">← Все задания</a>
+     CSS добавить перед footer{}: .back-link{ font-family:'Courier Prime',monospace; font-size:12px; color:var(--pencil); text-decoration:none; letter-spacing:.05em; display:inline-block; margin-bottom:16px; } .back-link:hover{ color:var(--ink); }
+
+  2. Сохранение результата — в конце showResult(), перед закрывающей }:
+     try { localStorage.setItem('result_<task_id>', JSON.stringify({ grade, score: <переменная_баллов>, maxScore: <переменная_макс>, pct, date: Date.now() })); } catch(e) {}
+     Где <task_id> = имя файла без .html; <переменная_баллов> и <переменная_макс> — реальные переменные из этого файла.
+
+  3. Запись в индекс — добавить новый объект в конец массива tasks в interactive-tasks/index.html:
+     { id: '<task_id>', file: '<имя_файла>.html', title: '<заголовок h1>', eyebrow: '<eyebrow из ТЗ>', maxScore: <сумма points всех вопросов> }
+     Читай index.html перед правкой. Вставляй точно в массив tasks[], сохраняй форматирование.
+
   - После завершения выведи: путь к файлу"
 )
 ```
@@ -216,7 +232,7 @@ Agent(
 Как только учитель одобрил задание (сказал «хорошо», «отлично», «окей» или что-то подобное) — **без дополнительных вопросов** выполни:
 
 ```bash
-git add interactive-tasks/<имя_файла>.html
+git add interactive-tasks/<имя_файла>.html interactive-tasks/index.html
 git commit -m "Add lesson: <тема>"
 git push
 ```
@@ -251,7 +267,7 @@ git push
     │
     ├─ Этап 1.5: координатор → показ плана учителю → одобрение
     │
-    ├─ Этап 2:   frontend → HTML файл → polish
+    ├─ Этап 2:   frontend → HTML файл + back-link + localStorage + запись в index.html → polish
     │
     ├─ Этап 3:   pm-ux ║ methodist  ← параллельно
     │              дизайн-ревью       контент-ревью

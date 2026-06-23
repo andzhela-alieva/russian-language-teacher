@@ -248,15 +248,15 @@ HTML-структура внутри карточки:
 ## 8. Обратная связь (.feedback)
 
 ```css
-.feedback      { margin-top: 12px; padding: 10px 14px; border-radius: 3px;
+.feedback      { margin-top: 12px; padding: 10px 14px; border-radius: 3px; border: 1px solid transparent;
   font-size: 15px; line-height: 1.5; display: none; }
 .feedback.show { display: block; }
-.feedback.ok   { background: rgba(63,122,79,.08); color: var(--green); border-left: 3px solid var(--green); }
-.feedback.bad  { background: rgba(181,57,47,.07); color: var(--red-dark); border-left: 3px solid var(--red); }
-.feedback.mid  { background: rgba(185,145,47,.08); color: var(--red-dark); border-left: 3px solid var(--gold); }
+.feedback.ok   { background: rgba(63,122,79,.08); color: var(--green);    border-color: var(--green); }
+.feedback.bad  { background: rgba(181,57,47,.07); color: var(--red-dark); border-color: var(--red); }
+.feedback.mid  { background: rgba(185,145,47,.08); color: var(--red-dark); border-color: var(--gold); }
 ```
 
-Три состояния: `ok` (всё верно), `bad` (ошибка), `mid` (частично верно).
+Три состояния: `ok` (всё верно), `bad` (ошибка), `mid` (частично верно). Граница — полная (`border: 1px solid`), не боковая полоска.
 
 ---
 
