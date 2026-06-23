@@ -1,6 +1,12 @@
-Deploy interactive tasks to Cloudflare Pages and return full links to every published page.
+Опубликовать интерактивные задания на GitHub Pages.
 
-!npx wrangler pages deploy "D:\work\interactive-tasks" --project-name=interactive-tasks
+1. Выполни в Bash:
+   ```
+   git add interactive-tasks/
+   git commit -m "Deploy: update interactive tasks"
+   git push
+   ```
+2. Выведи ссылки на все .html файлы в interactive-tasks/ в формате:
+   `https://andzhela-alieva.github.io/russian-language-teacher/interactive-tasks/<filename>`
 
-After deploying, list all .html files in D:\work\interactive-tasks and print the full URL for each one in the format:
-https://interactive-tasks.pages.dev/<filename>
+Страницы обновятся за 1–2 минуты после пуша.
