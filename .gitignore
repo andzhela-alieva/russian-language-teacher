@@ -3,6 +3,7 @@
 
 # Claude Code internals
 .claude/settings.local.json
+.impeccable/
 
 # OS
 .DS_Store
